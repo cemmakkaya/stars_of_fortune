@@ -1,2 +1,14 @@
-<h1>Groups#show</h1>
-<p>Find me in app/views/groups/show.html.erb</p>
+<h1><%= @group.name %></h1>
+
+<% if current_user.groups.include?(@group) %>
+  <p>Sie sind Mitglied dieser Gruppe.</p>
+<% else %>
+  <%= button_to 'Gruppe beitreten', join_group_path(@group), method: :post %>
+<% end %>
+
+<h2>Mitglieder:</h2>
+<ul>
+  <% @group.users.each do |user| %>
+    <li><%= user.username %></li>
+  <% end %>
+</ul>

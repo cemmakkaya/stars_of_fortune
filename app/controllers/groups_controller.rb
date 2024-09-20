@@ -25,11 +25,11 @@ class GroupsController < ApplicationController
   end
 
   def join
-    unless current_user.groups.include?(@group)
-      current_user.groups << @group
-      redirect_to @group, notice: 'You have joined the group.'
+    if @group.users.include?(current_user)
+      redirect_to @group, alert: 'Sie sind bereits Mitglied dieser Gruppe.'
     else
-      redirect_to @group, alert: 'You are already a member of this group.'
+      @group.users << current_user
+      redirect_to @group, notice: 'Sie sind der Gruppe erfolgreich beigetreten.'
     end
   end
 

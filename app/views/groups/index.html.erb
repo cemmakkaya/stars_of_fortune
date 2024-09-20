@@ -1,21 +1,15 @@
-<h1>Gruppen</h1>
+<h1>Alle Gruppen</h1>
 
-<% if @groups.any? %>
-  <ul>
-    <% @groups.each do |group| %>
-      <li>
-        <%= link_to group.name, group_path(group) %>
-        (<%= group.users.count %> Mitglieder)
-        <% if current_user.groups.include?(group) %>
-          <%= link_to 'Verlassen', leave_group_path(group), method: :post %>
-        <% else %>
-          <%= link_to 'Beitreten', join_group_path(group), method: :post %>
-        <% end %>
-      </li>
+<% @groups.each do |group| %>
+  <div>
+    <h2><%= link_to group.name, group_path(group) %></h2>
+    <p>Mitglieder: <%= group.users.count %></p>
+    <% if current_user.groups.include?(group) %>
+      <p>Sie sind Mitglied dieser Gruppe</p>
+    <% else %>
+      <%= button_to 'Beitreten', join_group_path(group), method: :post %>
     <% end %>
-  </ul>
-<% else %>
-  <p>Es gibt noch keine Gruppen.</p>
+  </div>
 <% end %>
 
 <%= link_to 'Neue Gruppe erstellen', new_group_path %>
