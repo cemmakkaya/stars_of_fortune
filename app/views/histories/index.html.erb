@@ -1,0 +1,26 @@
+<h1>Spielhistorie</h1>
+
+<% if @histories.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Spiel</th>
+        <th>Aktion</th>
+        <th>Betrag</th>
+        <th>Datum</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @histories.each do |history| %>
+        <tr>
+          <td><%= link_to "Spiel ##{history.game_id}", game_path(history.game) %></td>
+          <td><%= history.action %></td>
+          <td><%= history.amount %> C-Bucks</td>
+          <td><%= history.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Sie haben noch keine Spielhistorie.</p>
+<% end %>

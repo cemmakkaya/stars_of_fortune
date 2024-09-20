@@ -1,0 +1,11 @@
+<h1>Willkommen bei Stars of Fortune</h1>
+
+<% if user_signed_in? %>
+  <p>Hallo, <%= current_user.username %>!</p>
+  <%= link_to 'Gruppen anzeigen', groups_path %>
+  <%= link_to 'Spielhistorie', histories_path %>
+  <%= link_to 'Abmelden', destroy_user_session_path, data:{turbo_method: :delete, turbo_confirm: "Möchten sie sich wirklich abmelden?"} %>
+<% else %>
+  <%= link_to 'Anmelden', new_user_session_path %>
+  <%= link_to 'Registrieren', new_user_registration_path %>
+<% end %>
