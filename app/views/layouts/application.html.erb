@@ -1,23 +1,53 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Stars Of Fortune" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html lang="en" class="h-full bg-gray-100">
+<head>
+  <title><%= content_for(:title) || "Stars Of Fortune" %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= yield :head %>
+  <%= yield :head %>
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
 
-  <body>
-    <%= yield %>
-  </body>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="h-full">
+<div class="min-h-full">
+  <nav class="bg-gray-900 rounded-b-lg">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-white text-2xl font-bold tracking-wide">StarsOfFortune</span>
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <%= link_to 'Home', root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Groups', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+            </div>
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-4 flex items-center md:ml-6">
+            <% if user_signed_in? %>
+              <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+            <% else %>
+              <%= link_to 'Sign In', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Sign Up', new_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>
+</body>
 </html>
