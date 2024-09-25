@@ -1,15 +1,42 @@
-<h1>Alle Gruppen</h1>
+<div class="flex flex-col items-center min-h-screen bg-gray-100 p-8">
+  <div class="w-full max-w-4xl space-y-6">
+    <h1 class="text-4xl font-bold text-[#111827] mb-8">Gruppen</h1>
 
-<% @groups.each do |group| %>
-  <div>
-    <h2><%= link_to group.name, group_path(group) %></h2>
-    <p>Mitglieder: <%= group.users.count %></p>
-    <% if current_user.groups.include?(group) %>
-      <p>Sie sind Mitglied dieser Gruppe</p>
+    <% if @groups.any? %>
+      <ul class="space-y-4">
+        <% @groups.each do |group| %>
+          <li>
+            <div onclick="window.location='<%= group_path(group) %>'" class="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:shadow-lg hover:bg-sky-50 transition duration-200">
+              <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-semibold text-gray-900">
+                  <%= group.name %>
+                </h2>
+                <p class="text-gray-600">Mitglieder: <%= group.users.count %> / <%= Group::MAX_MEMBERS %></p>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
     <% else %>
-      <%= button_to 'Beitreten', join_group_path(group), method: :post %>
+      <p class="text-gray-700">Derzeit sind keine Gruppen verfügbar.</p>
     <% end %>
-  </div>
-<% end %>
 
-<%= link_to 'Neue Gruppe erstellen', new_group_path %>
+    <%= link_to 'Neue Gruppe erstellen', new_group_path, class: 'mt-8 inline-block px-6 py-2 bg-[#6CD5EA] text-white font-semibold rounded-lg shadow-md hover:bg-[#4DAFC0] transition duration-200' %>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('turbo:load', function() {
+        const groupDivs = document.querySelectorAll('[onclick^="window.location"]');
+        groupDivs.forEach(div => {
+            div.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    this.click();
+                }
+            });
+            div.setAttribute('tabindex', '0');
+            div.setAttribute('role', 'button');
+        });
+    });
+</script>

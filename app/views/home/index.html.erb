@@ -1,16 +1,17 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-  <h1 class="text-4xl font-bold text-gray-900 mb-8">StarsOfFortune</h1>
+<div class="flex flex-col items-center min-h-screen bg-gray-100 mt-40">
+  <h1 class="text-4xl font-bold text-gray-900 mb-8">
+    Welcome to <span class="underline decoration-[#6199A4]">StarsOfFortune</span>
+  </h1>
 
-  <div class="space-y-4">
+  <div class="flex space-x-4">
     <% if user_signed_in? %>
-      <p class="text-green-600">User is signed in</p>
-      <%= link_to 'Home', root_path, class: 'block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-200', data: { turbo: false } %>
-      <%= link_to 'Groups', groups_path, class: 'block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-200', data: { turbo: false } %>
-      <%= link_to 'History', histories_path, class: 'block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-200', data: { turbo: false } %>
+      <%= link_to 'Groups', groups_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Groups' %>
+      <%= link_to 'Games', games_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Game History' %>
+      <%= link_to 'History', histories_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Game History' %>
+
     <% else %>
-      <p class="text-red-600">User is not signed in</p>
-      <%= link_to 'Sign In', new_user_session_path, class: 'block px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 transition duration-200', data: { turbo: false } %>
-      <%= link_to 'Sign Up', new_user_registration_path, class: 'block px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 transition duration-200', data: { turbo: false } %>
+      <%= link_to 'Sign In', new_user_session_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Sign in to your account' %>
+      <%= link_to 'Sign Up', new_user_registration_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Create a new account' %>
     <% end %>
   </div>
 </div>

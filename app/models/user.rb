@@ -3,11 +3,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          authentication_keys: [:username]
 
-  has_many :group_memberships
+  has_many :group_memberships, dependent: :destroy
   has_many :groups, through: :group_memberships
-  has_many :game_participations
+  has_many :game_participations, dependent: :destroy
   has_many :games, through: :game_participations
-  has_many :game_histories
+  has_many :game_histories, dependent: :nullify
 
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
@@ -26,5 +26,9 @@ class User < ApplicationRecord
 
   def ensure_email
     self.email = "#{SecureRandom.uuid}@example.com" if email.blank?
+  end
+
+  def admin?
+    admin
   end
 end

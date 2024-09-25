@@ -1,26 +1,29 @@
-<h1>Neue Gruppe erstellen</h1>
+<div class="flex flex-col items-center min-h-screen bg-gray-100 p-8">
+  <h1 class="text-4xl font-bold text-[#111827] mb-8">Neue Gruppe erstellen</h1>
 
-<%= form_with(model: @group, local: true) do |form| %>
-  <% if @group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@group.errors.count, "error") %> verhinderten, dass diese Gruppe gespeichert wurde:</h2>
+  <div class="w-full max-w-2xl bg-white p-4 rounded-lg shadow-md border border-gray-200">
+    <%= form_with(model: @group, local: true) do |form| %>
+      <% if @group.errors.any? %>
+        <div id="error_explanation" class="mb-4 p-4 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+          <h2 class="font-semibold"><%= pluralize(@group.errors.count, "error") %> verhinderten, dass diese Gruppe gespeichert wurde:</h2>
+          <ul class="list-disc list-inside mt-2">
+            <% @group.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-      <ul>
-        <% @group.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+      <div class="field mb-4">
+        <%= form.label :name, class: 'block text-sm font-medium text-[#111827]' %>
+        <%= form.text_field :name, class: 'mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:border-transparent' %>
+      </div>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+      <div class="actions">
+        <%= form.submit "Gruppe erstellen", class: 'mt-4 px-6 py-2 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] transition duration-200' %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="actions">
-    <%= form.submit "Gruppe erstellen" %>
-  </div>
-<% end %>
-
-<%= link_to 'Zurück zur Gruppenübersicht', groups_path %>
+  <%= link_to 'Zurück zur Gruppenübersicht', groups_path, class: 'mt-8 text-[#4FB6CB] hover:underline' %>
+</div>

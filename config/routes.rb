@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index'
-  
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'devise/sessions'
@@ -10,19 +10,24 @@ Rails.application.routes.draw do
     sign_up: 'sign_up'
   }
 
+  resource :profile, only: [:show, :edit, :update, :destroy]
+
   resources :groups do
     member do
       post 'join'
+      post 'leave'
     end
   end
-  
-  resources :games, only: [:create, :show, :update]
+
+  resources :games, only: [:index, :new, :create, :show, :update]
   resources :histories, only: [:index]
 
-  # Wenn Sie eine separate Home-Seite zusätzlich zur Root-Route benötigen
-  get 'home/index'
+  namespace :admin do
+    get 'dashboard'
+    resources :users, only: [:edit, :update, :destroy]
+  end
 
-  # Render dynamic PWA files from app/views/pwa/*
+  # PWA routes
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
