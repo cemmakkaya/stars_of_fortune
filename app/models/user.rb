@@ -7,11 +7,13 @@ class User < ApplicationRecord
   has_many :groups, through: :group_memberships
   has_many :game_participations, dependent: :destroy
   has_many :games, through: :game_participations
-  has_many :game_histories, dependent: :nullify
+  has_many :game_histories, dependent: :destroy
 
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
-  
+
+  scope :admins, -> { where(admin: true) }
+
   def email_required?
     false
   end
@@ -29,6 +31,6 @@ class User < ApplicationRecord
   end
 
   def admin?
-    admin
+    admin == true
   end
 end

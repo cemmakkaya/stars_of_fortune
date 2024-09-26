@@ -23,8 +23,13 @@ Rails.application.routes.draw do
   resources :histories, only: [:index]
 
   namespace :admin do
-    get 'dashboard'
-    resources :users, only: [:edit, :update, :destroy]
+    get "dashboard/index"
+    get "users/index"
+    get "users/edit"
+    get "users/update"
+    get "users/destroy"
+    get 'dashboard', to: 'dashboard#index'
+    resources :users
   end
 
   # PWA routes

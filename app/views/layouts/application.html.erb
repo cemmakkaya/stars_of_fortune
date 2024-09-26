@@ -15,6 +15,7 @@
   <link rel="apple-touch-icon" href="/icon.png">
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -24,9 +25,7 @@
   <nav class="bg-gray-900 rounded-b-lg">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
-        <% if current_user&.admin? %>
-          <%= link_to 'Admin Dashboard', admin_dashboard_path, class: 'text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium' %>
-        <% end %>
+
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <span class="text-white text-2xl font-bold tracking-wide">StarsOfFortune</span>
@@ -37,11 +36,15 @@
               <%= link_to 'Games', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
               <%= link_to 'Groups', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
             </div>
+
           </div>
         </div>
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
             <% if user_signed_in? %>
+              <% if current_user&.admin? %>
+                <%= link_to 'Admin Dashboard', admin_users_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <% end %>
               <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
             <% else %>
               <%= link_to 'Sign In', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
@@ -83,7 +86,23 @@
   </div>
 
   <main class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-    <!-- Flash messages -->
+    <% if user_signed_in? %>
+      <div class="flex justify-center mb-4 relative"> <!-- Flexbox zur Zentrierung und relative Positionierung -->
+        <div class="bg-blue-100 border border-blue-500 text-blue-700 px-4 py-2 rounded relative w-auto text-center group"> <!-- Gruppe für Hover-Effekte -->
+          <span class="block sm:inline font-semibold">
+            C-Bucks: <span class="text-black-600"><%= current_user.c_bucks %></span>
+          </span>
+
+          <!-- Tooltip für C-Bucks Kontostand -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-40 p-2 text-center text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            Spielen Sie das Kartenspiel, um mehr C-Bucks zu erhalten!
+          </div>
+        </div>
+      </div>
+
+
+  <% end %>
+
     <% flash.each do |type, message| %>
       <div class="<%= type == 'notice' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700' %> border px-4 py-3 rounded relative mb-4" role="alert">
         <span class="block sm:inline"><%= message %></span>
