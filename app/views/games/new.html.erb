@@ -1,23 +1,28 @@
-<h1 class="text-2xl font-bold mb-4">Create New Game</h1>
+<div class="min-h-screen flex flex-col items-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Create New Game</h1>
 
-<%= form_with(model: @game, local: true, class: 'space-y-4') do |form| %>
-  <% if @game.errors.any? %>
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong class="font-bold">Error!</strong>
-      <ul>
-        <% @game.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <%= form_with(model: @game, local: true, class: 'space-y-4') do |form| %>
+      <% if @game.errors.any? %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <strong class="font-bold">Error!</strong>
+          <ul class="list-disc list-inside mt-2">
+            <% @game.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div>
-    <%= form.label :group_id, class: 'block text-sm font-medium text-gray-700' %>
-    <%= form.collection_select :group_id, Group.all, :id, :name, {prompt: 'Select a group'}, class: 'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' %>
+      <div class="mb-4">
+        <%= form.label :group_id, 'Select Group', class: 'block text-sm font-medium text-gray-700' %>
+        <%= form.collection_select :group_id, Group.all, :id, :name, {prompt: 'Choose a group'}, class: 'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#4FB6CB] focus:border-[#4FB6CB] sm:text-sm' %>
+      </div>
+
+      <div class="flex items-center justify-between mt-6">
+        <%= form.submit 'Create Game', class: 'inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#4FB6CB] hover:bg-[#08A52F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4FB6CB]' %>
+        <%= link_to 'Back to Games', games_path, class: 'inline-block text-[#4FB6CB] hover:text-[#08A52F]' %>
+      </div>
+    <% end %>
   </div>
-
-  <%= form.submit 'Create Game', class: 'inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
-<% end %>
-
-<%= link_to 'Back to Games', games_path, class: 'mt-4 inline-block text-indigo-600 hover:text-indigo-900' %>
+</div>

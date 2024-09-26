@@ -9,7 +9,6 @@ class User < ApplicationRecord
   has_many :games, through: :game_participations
   has_many :game_histories, dependent: :destroy
 
-
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
   scope :admins, -> { where(admin: true) }
@@ -32,5 +31,17 @@ class User < ApplicationRecord
 
   def admin?
     admin == true
+  end
+
+  def active_game
+    games.where(status: ['waiting', 'in_progress']).first
+  end
+
+  def can_create_game?
+    active_game.nil?
+  end
+
+  def can_join_game?(game)
+    active_game.nil? || active_game == game
   end
 end

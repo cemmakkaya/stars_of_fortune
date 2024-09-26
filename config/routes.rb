@@ -19,15 +19,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :games, only: [:index, :new, :create, :show, :update]
+  resources :games do
+    member do
+      post 'join'
+    end
+  end
+
   resources :histories, only: [:index]
 
   namespace :admin do
-    get "dashboard/index"
-    get "users/index"
-    get "users/edit"
-    get "users/update"
-    get "users/destroy"
     get 'dashboard', to: 'dashboard#index'
     resources :users
   end

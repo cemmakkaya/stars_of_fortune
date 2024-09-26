@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+.card {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.card.selected {
+    background-color: #e0e0e0;
+    border-color: #999;
+}

@@ -1,36 +1,57 @@
-<h1>Gamble Room</h1>
+<div id="game-container" data-game-id="<%= @game.id %>" data-current-user="<%= current_user.id %>" class="min-h-screen bg-gray-100 p-8">
+  <h1 class="text-4xl font-bold text-gray-900 mb-4 text-center">Game #<%= @game.id %></h1>
 
-<div id="game-board" data-game-id="<%= @game.id %>">
-  <h2>Game #<%= @game.id %></h2>
-  <p>Status: <span id="game-status"><%= @game.status %></span></p>
-  <div id="countdown" style="display: none;">Time left: <span id="timer">30</span></div>
-
-  <div id="card-selection" style="display: none;">
-    <h3>Select a card:</h3>
-    <% (1..4).each do |card| %>
-      <button class="card-button" data-card="<%= card %>">Card <%= card %></button>
-    <% end %>
+  <div id="game-status" class="mb-4 text-center">
+    <span class="font-semibold">Status:</span> <span id="status" class="text-[#4FB6CB]"><%= @game.status %></span>
   </div>
 
-  <div id="bet-input" style="display: none;">
-    <h3>Place your bet:</h3>
-    <input type="number" id="bet-amount" min="1" max="<%= current_user.c_bucks %>">
-    <button id="place-bet">Place Bet</button>
+  <div id="game-feedback" style="display: none;" class="alert alert-info bg-blue-100 border border-blue-400 text-blue-700 px-4 py-2 rounded mb-4"></div>
+
+  <div id="countdown" style="display: none;" class="mb-4 text-center">
+    <span class="font-semibold">Countdown:</span> <span id="timer" class="text-red-600"></span>
   </div>
 
-  <div id="game-result" style="display: none;">
-    <h3>Game Result</h3>
-    <p>Winning Card: <span id="winning-card"></span></p>
-    <div id="winners-list"></div>
-    <div id="losers-list"></div>
+  <div id="current-player" style="display: none;" class="mb-4 text-center">
+    <span class="font-semibold">Current player:</span> <span id="current-player-name" class="font-bold"></span>
+  </div>
+
+  <div id="current-pot" style="display: none;" class="mb-4 text-center">
+    <span class="font-semibold">Current pot:</span> <span id="pot-amount" class="font-bold">0</span> C-Bucks
+  </div>
+
+  <div id="players" class="mb-6">
+    <h2 class="text-2xl font-bold mb-2">Players:</h2>
+    <ul id="player-list" class="list-disc list-inside">
+      <% @game.users.each do |user| %>
+        <li data-user-id="<%= user.id %>" class="text-gray-800"><%= user.username %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% if @game.status == 'waiting' && !@game.users.include?(current_user) %>
+    <div class="mb-6 text-center">
+      <%= button_to 'Join Game', join_game_path(@game), method: :post, class: 'px-4 py-2 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#08A52F] transition duration-200 join-game-btn' %>
+    </div>
+  <% end %>
+
+  <div id="game-board" style="display: none;" class="bg-white rounded-lg shadow-md p-4">
+    <h2 class="text-2xl font-bold mb-4">Select a card and place your bet:</h2>
+    <div id="cards" class="flex flex-wrap justify-center mb-4">
+      <% @game.cards.each do |card| %>
+        <button class="card bg-[#4FB6CB] text-white py-2 px-4 rounded-lg m-2 transition-transform transform hover:scale-105" data-card="<%= card %>"><%= card %></button>
+      <% end %>
+    </div>
+    <div id="bet" class="flex flex-col items-center">
+      <label for="bet-amount" class="mb-2 font-medium">Bet amount:</label>
+      <input type="number" id="bet-amount" min="1" max="<%= current_user.c_bucks %>" class="border border-gray-300 rounded-md p-2 mb-4">
+      <button id="place-bet" class="px-4 py-2 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#08A52F] transition duration-200">Place Bet</button>
+    </div>
+  </div>
+
+  <div id="result" style="display: none;" class="mt-6 bg-white rounded-lg shadow-md p-4">
+    <h2 class="text-2xl font-bold mb-4">Game Result:</h2>
+    <p class="font-semibold">Winning card: <span id="winning-card" class="text-[#4FB6CB] font-bold"></span></p>
+    <div id="winners" class="mt-2"></div>
+    <div id="losers" class="mt-2"></div>
   </div>
 </div>
-
-<h2>Players:</h2>
-<ul id="players-list">
-  <% @game.users.each do |user| %>
-    <li><%= user.username %></li>
-  <% end %>
-</ul>
-
-<%= link_to 'Back to Group', group_path(@game.group) %>
