@@ -1,4 +1,5 @@
 class Group < ApplicationRecord
+
   has_many :group_memberships, dependent: :destroy
   has_many :users, through: :group_memberships, after_remove: :destroy_if_empty
   has_many :games, dependent: :destroy

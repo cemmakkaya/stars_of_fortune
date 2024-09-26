@@ -29,6 +29,9 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get 'dashboard', to: 'dashboard#index'
+    post 'create_group', to: 'dashboard#create_group'
+    patch 'update_group/:id', to: 'dashboard#update_group', as: 'update_group'
+    delete 'destroy_group/:id', to: 'dashboard#destroy_group', as: 'destroy_group'
     resources :users
   end
 

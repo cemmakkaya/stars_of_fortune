@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_26_064936) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_26_114020) do
   create_table "game_histories", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "game_id", null: false
@@ -53,6 +53,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_064936) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "gruppens", force: :cascade do |t|
+    t.string "name"
+    t.text "beschreibung"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
