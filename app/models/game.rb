@@ -4,29 +4,30 @@ class Game < ApplicationRecord
   has_many :users, through: :game_participations
   has_many :game_histories
 
-  attribute :cards, :json, default: -> { (1..4).to_a.shuffle }
-  attribute :winning_card, :integer
-  attribute :status, :string, default: 'waiting'
-  attribute :start_time, :datetime
-
-  before_create :setup_game
-
-  def start_countdown
-    update(start_time: Time.current + 15.seconds)
+  def set_winning_card
+    self.winning_card = rand(1..4)
   end
 
-  def time_left
-    return 0 if start_time.nil?
-    [(start_time - Time.current).to_i, 0].max
+  def won?(user)
+    participation = game_participations.find_by(user: user)
+    participation&.selected_card == winning_card
   end
 
-  def ready_to_start?
-    users.count >= 2 && time_left == 0
+  def update_user_c_bucks
+    game_participations.each do |participation|
+      if won?(participation.user)
+        participation.user.increment!(:c_bucks, participation.bet_amount)
+        create_game_history(participation.user, participation.bet_amount, 'win')
+      else
+        participation.user.decrement!(:c_bucks, participation.bet_amount)
+        create_game_history(participation.user, participation.bet_amount, 'loss')
+      end
+    end
   end
 
   private
 
-  def setup_game
-    self.winning_card = cards.first
+  def create_game_history(user, amount, action)
+    game_histories.create(user: user, amount: amount, action: action)
   end
 end

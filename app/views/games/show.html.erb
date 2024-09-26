@@ -1,57 +1,41 @@
-<div id="game-container" data-game-id="<%= @game.id %>" data-current-user="<%= current_user.id %>" class="min-h-screen bg-gray-100 p-8">
-  <h1 class="text-4xl font-bold text-gray-900 mb-4 text-center">Game #<%= @game.id %></h1>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Game Result</h1>
 
-  <div id="game-status" class="mb-4 text-center">
-    <span class="font-semibold">Status:</span> <span id="status" class="text-[#4FB6CB]"><%= @game.status %></span>
-  </div>
-
-  <div id="game-feedback" style="display: none;" class="alert alert-info bg-blue-100 border border-blue-400 text-blue-700 px-4 py-2 rounded mb-4"></div>
-
-  <div id="countdown" style="display: none;" class="mb-4 text-center">
-    <span class="font-semibold">Countdown:</span> <span id="timer" class="text-red-600"></span>
-  </div>
-
-  <div id="current-player" style="display: none;" class="mb-4 text-center">
-    <span class="font-semibold">Current player:</span> <span id="current-player-name" class="font-bold"></span>
-  </div>
-
-  <div id="current-pot" style="display: none;" class="mb-4 text-center">
-    <span class="font-semibold">Current pot:</span> <span id="pot-amount" class="font-bold">0</span> C-Bucks
-  </div>
-
-  <div id="players" class="mb-6">
-    <h2 class="text-2xl font-bold mb-2">Players:</h2>
-    <ul id="player-list" class="list-disc list-inside">
-      <% @game.users.each do |user| %>
-        <li data-user-id="<%= user.id %>" class="text-gray-800"><%= user.username %></li>
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <% if @game.status == 'completed' %>
+      <% participation = @game.game_participations.find_by(user: current_user) %>
+      <% if participation %>
+        <p class="text-2xl font-bold mb-4 <%= @game.won?(current_user) ? 'text-green-500' : 'text-red-500' %>">
+          <%= @game.won?(current_user) ? 'You Won!' : 'You Lost.' %>
+        </p>
+        <p class="text-xl mb-4">
+          You chose Card <%= participation.selected_card %> and bet <%= participation.bet_amount %> C-Bucks.
+        </p>
+        <p class="text-xl mb-4">
+          The winning card was: <%= @game.winning_card %>
+        </p>
+        <% if @game.won?(current_user) %>
+          <p class="text-xl mb-4 text-green-500">
+            You won <%= participation.bet_amount %> C-Bucks!
+          </p>
+        <% else %>
+          <p class="text-xl mb-4 text-red-500">
+            You lost <%= participation.bet_amount %> C-Bucks.
+          </p>
+        <% end %>
+        <p class="text-xl mb-4">
+          Your current C-Bucks balance: <%= current_user.c_bucks %>
+        </p>
+      <% else %>
+        <p class="text-xl mb-4">You did not participate in this game.</p>
       <% end %>
-    </ul>
+    <% else %>
+      <p class="text-xl mb-4">The game is not completed yet.</p>
+    <% end %>
   </div>
 
-  <% if @game.status == 'waiting' && !@game.users.include?(current_user) %>
-    <div class="mb-6 text-center">
-      <%= button_to 'Join Game', join_game_path(@game), method: :post, class: 'px-4 py-2 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#08A52F] transition duration-200 join-game-btn' %>
-    </div>
-  <% end %>
-
-  <div id="game-board" style="display: none;" class="bg-white rounded-lg shadow-md p-4">
-    <h2 class="text-2xl font-bold mb-4">Select a card and place your bet:</h2>
-    <div id="cards" class="flex flex-wrap justify-center mb-4">
-      <% @game.cards.each do |card| %>
-        <button class="card bg-[#4FB6CB] text-white py-2 px-4 rounded-lg m-2 transition-transform transform hover:scale-105" data-card="<%= card %>"><%= card %></button>
-      <% end %>
-    </div>
-    <div id="bet" class="flex flex-col items-center">
-      <label for="bet-amount" class="mb-2 font-medium">Bet amount:</label>
-      <input type="number" id="bet-amount" min="1" max="<%= current_user.c_bucks %>" class="border border-gray-300 rounded-md p-2 mb-4">
-      <button id="place-bet" class="px-4 py-2 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#08A52F] transition duration-200">Place Bet</button>
-    </div>
-  </div>
-
-  <div id="result" style="display: none;" class="mt-6 bg-white rounded-lg shadow-md p-4">
-    <h2 class="text-2xl font-bold mb-4">Game Result:</h2>
-    <p class="font-semibold">Winning card: <span id="winning-card" class="text-[#4FB6CB] font-bold"></span></p>
-    <div id="winners" class="mt-2"></div>
-    <div id="losers" class="mt-2"></div>
+  <div class="text-center">
+    <%= link_to 'Play Again', new_game_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+    <%= link_to 'Back to Games', games_path, class: "ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded" %>
   </div>
 </div>

@@ -1,28 +1,35 @@
-<div class="min-h-screen flex flex-col items-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full bg-white shadow-md rounded-lg p-8">
-    <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">Create New Game</h1>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Wähle eine Karte und wette!</h1>
 
-    <%= form_with(model: @game, local: true, class: 'space-y-4') do |form| %>
-      <% if @game.errors.any? %>
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-          <strong class="font-bold">Error!</strong>
-          <ul class="list-disc list-inside mt-2">
-            <% @game.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <div class="mb-4">
-        <%= form.label :group_id, 'Select Group', class: 'block text-sm font-medium text-gray-700' %>
-        <%= form.collection_select :group_id, Group.all, :id, :name, {prompt: 'Choose a group'}, class: 'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#4FB6CB] focus:border-[#4FB6CB] sm:text-sm' %>
-      </div>
-
-      <div class="flex items-center justify-between mt-6">
-        <%= form.submit 'Create Game', class: 'inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#4FB6CB] hover:bg-[#08A52F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4FB6CB]' %>
-        <%= link_to 'Back to Games', games_path, class: 'inline-block text-[#4FB6CB] hover:text-[#08A52F]' %>
+  <%= form_with(model: @game, local: true, class: "max-w-md mx-auto") do |form| %>
+    <% if @game.errors.any? %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Oops!</strong>
+        <ul>
+          <% @game.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
-  </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <% 4.times do |i| %>
+        <div class="card-option">
+          <%= form.radio_button :selected_card, i+1, class: "hidden peer" %>
+          <%= form.label "selected_card_#{i+1}", class: "block p-4 border-2 border-gray-200 rounded-lg text-center cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-100 transition-all" do %>
+            <i class="fas fa-star text-4xl mb-2"></i>
+            <p><%= i+1 %> . Karte</p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :bet_amount, "Dein Einsatz (C-Bucks)", class: "block mb-2 font-bold" %>
+      <%= form.number_field :bet_amount, min: 1, max: current_user.c_bucks, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <%= form.submit "Wetten", class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  <% end %>
 </div>

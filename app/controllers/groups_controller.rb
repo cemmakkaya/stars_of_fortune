@@ -1,23 +1,37 @@
 class GroupsController < ApplicationController
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :join, :leave]
+  before_action :authenticate_user!
+
   def index
     @groups = Group.all
   end
 
   def show
     @group = Group.find(params[:id])
+    @post = @group.posts.build # Initialisiere @post
+    @members_count = @group.users.count
+    @is_member = current_user.groups.include?(@group)
   end
 
   def new
     @group = Group.new
   end
 
+
   def create
     @group = Group.new(group_params)
-    if @group.save
-      redirect_to @group, notice: 'Group was successfully created.'
-    else
-      render :new
+
+    Group.transaction do
+      if @group.save
+        @group.users << current_user
+        redirect_to @group, notice: 'Gruppe wurde erfolgreich erstellt und Sie sind beigetreten.'
+      else
+        render :new
+      end
     end
+  rescue ActiveRecord::RecordInvalid
+    @group.errors.add(:base, "Fehler beim Erstellen der Gruppe")
+    render :new
   end
 
   def edit
@@ -40,18 +54,34 @@ class GroupsController < ApplicationController
   end
 
   def join
-    @group = Group.find(params[:id])
-    current_user.groups << @group unless current_user.groups.include?(@group)
-    redirect_to @group, notice: 'You have joined the group.'
+    if @group.nil?
+      redirect_to groups_path, alert: 'Gruppe nicht gefunden.'
+    elsif @group.users.include?(current_user)
+      redirect_to @group, alert: 'Sie sind bereits Mitglied dieser Gruppe.'
+    else
+      @group.users << current_user
+      redirect_to @group, notice: 'Sie sind der Gruppe beigetreten.'
+    end
   end
 
   def leave
-    @group = Group.find(params[:id])
-    current_user.groups.delete(@group)
-    redirect_to groups_url, notice: 'You have left the group.'
+    if @group.users.include?(current_user)
+      @group.remove_member(current_user)
+      if @group.destroyed?
+        redirect_to groups_path, notice: 'Sie haben die Gruppe verlassen. Die Gruppe wurde gelöscht, da sie keine Mitglieder mehr hatte.'
+      else
+        redirect_to groups_path, notice: 'Sie haben die Gruppe verlassen.'
+      end
+    else
+      redirect_to groups_path, alert: 'Sie sind kein Mitglied dieser Gruppe.'
+    end
   end
 
   private
+
+  def set_group
+    @group = Group.find(params[:id])
+  end
 
   def group_params
     params.require(:group).permit(:name)

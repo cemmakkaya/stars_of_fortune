@@ -1,26 +1,30 @@
-<h1>Spielhistorie</h1>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Your Game History</h1>
 
-<% if @histories.any? %>
-  <table>
-    <thead>
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="min-w-full">
+      <thead class="bg-gray-100">
       <tr>
-        <th>Spiel</th>
-        <th>Aktion</th>
-        <th>Betrag</th>
-        <th>Datum</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Game</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
       <% @histories.each do |history| %>
         <tr>
-          <td><%= link_to "Spiel ##{history.game_id}", game_path(history.game) %></td>
-          <td><%= history.action %></td>
-          <td><%= history.amount %> C-Bucks</td>
-          <td><%= history.created_at.strftime("%d.%m.%Y %H:%M") %></td>
+          <td class="px-6 py-4 whitespace-nowrap"><%= history.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+          <td class="px-6 py-4 whitespace-nowrap">Game #<%= history.game_id %></td>
+          <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= history.action == 'win' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                <%= history.action.capitalize %>
+              </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap"><%= history.amount %> C-Bucks</td>
         </tr>
       <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>Sie haben noch keine Spielhistorie.</p>
-<% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

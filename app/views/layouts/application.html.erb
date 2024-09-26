@@ -33,8 +33,9 @@
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
               <%= link_to 'Home', root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
-              <%= link_to 'Games', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
-              <%= link_to 'Groups', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Gruppen', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Spielen', new_game_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+
             </div>
 
           </div>
@@ -45,10 +46,10 @@
               <% if current_user&.admin? %>
                 <%= link_to 'Admin Dashboard', admin_users_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
               <% end %>
-              <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= button_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
             <% else %>
-              <%= link_to 'Sign In', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
-              <%= link_to 'Sign Up', new_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Anmelden', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Abmelden', new_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
             <% end %>
           </div>
         </div>
@@ -74,12 +75,13 @@
         <%= link_to 'Home', root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
         <%= link_to 'Games', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
         <%= link_to 'Groups', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
-        <%= link_to 'Mein Profil', profile_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' %>
+        <%= link_to 'Play', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
+
         <% if user_signed_in? %>
-          <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
+          <%= button_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
         <% else %>
-          <%= link_to 'Sign In', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
-          <%= link_to 'Sign Up', new_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
+          <%= link_to 'Anmelden', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
+          <%= link_to 'Abmelden', new_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
         <% end %>
       </div>
     </div>
@@ -87,16 +89,14 @@
 
   <main class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
     <% if user_signed_in? %>
-      <div class="flex justify-center mb-4 relative"> <!-- Flexbox zur Zentrierung und relative Positionierung -->
-        <div class="bg-blue-100 border border-blue-500 text-blue-700 px-4 py-2 rounded relative w-auto text-center group"> <!-- Gruppe für Hover-Effekte -->
+      <div class="flex justify-center mb-4 relative">
+        <div class="bg-blue-100 border border-blue-500 text-blue-700 px-4 py-2 rounded relative w-auto text-center group">
           <span class="block sm:inline font-semibold">
-            C-Bucks: <span class="text-black-600"><%= current_user.c_bucks %></span>
-          </span>
+        C-Bucks: <span id="c-bucks-display" class="text-black-600"><%= current_user.c_bucks %></span>
+      </span>
         </div>
       </div>
-
-
-  <% end %>
+    <% end %>
 
     <% flash.each do |type, message| %>
       <div class="<%= type == 'notice' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700' %> border px-4 py-3 rounded relative mb-4" role="alert">

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'home#index'
 
+  # Devise routes for user authentication
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'devise/sessions'
@@ -10,28 +11,36 @@ Rails.application.routes.draw do
     sign_up: 'sign_up'
   }
 
+  # Profile management routes
   resource :profile, only: [:show, :edit, :update, :destroy]
 
+  # Group and post routes
   resources :groups do
     member do
       post 'join'
-      post 'leave'
+      delete 'leave'
     end
+    resources :posts, only: [:create]
   end
 
-  resources :games do
+  # Game routes
+  resources :games, only: [:index, :new, :create, :show] do
     member do
       post 'join'
     end
   end
 
+  # History routes
   resources :histories, only: [:index]
 
+  # Admin routes with group management
   namespace :admin do
     get 'dashboard', to: 'dashboard#index'
-    post 'create_group', to: 'dashboard#create_group'
-    patch 'update_group/:id', to: 'dashboard#update_group', as: 'update_group'
-    delete 'destroy_group/:id', to: 'dashboard#destroy_group', as: 'destroy_group'
+    resources :groups, only: [:create, :update, :destroy], controller: 'dashboard' do
+      post 'create', on: :collection, action: 'create_group'
+      patch 'update', on: :member, action: 'update_group'
+      delete 'destroy', on: :member, action: 'destroy_group'
+    end
     resources :users
   end
 
@@ -39,6 +48,6 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  # Health check
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 end

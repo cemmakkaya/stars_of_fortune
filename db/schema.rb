@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_26_114020) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_26_214457) do
   create_table "game_histories", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.integer "game_id", null: false
     t.integer "amount"
     t.string "action"
@@ -39,6 +39,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_114020) do
     t.integer "winning_card"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "selected_card"
     t.index ["group_id"], name: "index_games_on_group_id"
   end
 
@@ -64,6 +65,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_114020) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "group_id", null: false
+    t.index ["group_id"], name: "index_posts_on_group_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
@@ -83,8 +95,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_114020) do
   add_foreign_key "game_histories", "games"
   add_foreign_key "game_histories", "users"
   add_foreign_key "game_participations", "games"
-  add_foreign_key "game_participations", "users"
+  add_foreign_key "game_participations", "users", on_delete: :cascade
   add_foreign_key "games", "groups"
   add_foreign_key "group_memberships", "groups"
-  add_foreign_key "group_memberships", "users"
+  add_foreign_key "group_memberships", "users", on_delete: :cascade
+  add_foreign_key "posts", "groups"
+  add_foreign_key "posts", "users"
 end

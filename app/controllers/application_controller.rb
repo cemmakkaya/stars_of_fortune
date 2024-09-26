@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_current_user
+    User.current = current_user
+  end
+
   def reload_current_user
     current_user.reload
   end

@@ -1,44 +1,18 @@
-<div class="min-h-screen flex flex-col items-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-3xl w-full bg-white shadow-md rounded-lg p-8">
-    <h1 class="text-3xl font-bold text-gray-900 text-center mb-8">Available Games</h1>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Games</h1>
 
-    <% if current_user.can_create_game? %>
-      <div class="text-center mb-4">
-        <%= link_to 'Create New Game', new_game_path, class: 'inline-block px-4 py-2 bg-[#4FB6CB] text-white font-semibold rounded-md shadow-md hover:bg-[#08A52F] transition duration-200' %>
+  <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <% @games.each do |game| %>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-2">Game #<%= game.id %></h2>
+        <p class="mb-2">Status: <%= game.status %></p>
+        <p class="mb-4">Players: <%= game.users.count %></p>
+        <%= link_to 'View Game', game_path(game), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
       </div>
     <% end %>
+  </div>
 
-    <table class="min-w-full bg-white border border-gray-200">
-      <thead>
-      <tr class="bg-gray-100 border-b">
-        <th class="py-2 px-4 text-left text-sm font-medium text-gray-600">Game ID</th>
-        <th class="py-2 px-4 text-left text-sm font-medium text-gray-600">Players</th>
-        <th class="py-2 px-4 text-left text-sm font-medium text-gray-600">Status</th>
-        <th class="py-2 px-4 text-left text-sm font-medium text-gray-600">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @games.each do |game| %>
-        <tr class="border-b hover:bg-gray-50">
-          <td class="py-2 px-4 text-sm text-gray-700"><%= game.id %></td>
-          <td class="py-2 px-4 text-sm text-gray-700"><%= game.users.count %> / 4</td>
-          <td class="py-2 px-4 text-sm text-gray-700"><%= game.status %></td>
-          <td class="py-2 px-4">
-            <% if current_user.can_join_game?(game) %>
-              <%= button_to 'Join', join_game_path(game), method: :post, class: 'inline-block px-4 py-1 bg-[#4FB6CB] text-white font-semibold rounded-md shadow-md hover:bg-[#08A52F] transition duration-200' %>
-            <% else %>
-              <%= link_to 'View', game_path(game), class: 'inline-block px-4 py-1 bg-gray-200 text-gray-700 font-semibold rounded-md shadow-md hover:bg-gray-300 transition duration-200' %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-
-    <% if @active_game %>
-      <div class="mt-6 p-4 bg-blue-100 border border-blue-500 text-blue-700 rounded-md">
-        You have an active game. <%= link_to 'Return to your game', game_path(@active_game), class: 'font-semibold text-blue-600 hover:underline' %>
-      </div>
-    <% end %>
+  <div class="mt-8 text-center">
+    <%= link_to 'Create New Game', new_game_path, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
   </div>
 </div>

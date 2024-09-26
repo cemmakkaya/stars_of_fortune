@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :game_participations, dependent: :destroy
   has_many :games, through: :game_participations
   has_many :game_histories, dependent: :destroy
+  has_many :posts
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -43,5 +44,13 @@ class User < ApplicationRecord
 
   def can_join_game?(game)
     active_game.nil? || active_game == game
+  end
+
+  def self.current
+    Thread.current[:current_user]
+  end
+
+  def self.current=(user)
+    Thread.current[:current_user] = user
   end
 end
