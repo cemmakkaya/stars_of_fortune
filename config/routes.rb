@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'home#index'
+  root to: 'home#index'
 
   # Devise routes for user authentication
   devise_for :users, controllers: {
@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   }
 
   # Profile management routes
-  resource :profile, only: [:show, :edit, :update, :destroy]
+  resource :profile, only: [:show, :edit, :update]
 
   # Group and post routes
   resources :groups do

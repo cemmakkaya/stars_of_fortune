@@ -7,16 +7,13 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:id])
-    @post = @group.posts.build # Initialisiere @post
     @members_count = @group.users.count
-    @is_member = current_user.groups.include?(@group)
+    @is_member = @group.users.include?(current_user)
+    @post = Post.new  # Initialisiere @post hier
   end
-
   def new
     @group = Group.new
   end
-
 
   def create
     @group = Group.new(group_params)
@@ -63,7 +60,6 @@ class GroupsController < ApplicationController
       redirect_to @group, notice: 'Sie sind der Gruppe beigetreten.'
     end
   end
-
   def leave
     if @group.users.include?(current_user)
       @group.remove_member(current_user)
@@ -85,5 +81,12 @@ class GroupsController < ApplicationController
 
   def group_params
     params.require(:group).permit(:name)
+  end
+
+  def ensure_member
+    @is_member = @group.users.include?(current_user)
+    unless @is_member
+      flash.now[:alert] = 'Sie müssen der Gruppe beitreten, um Posts zu erstellen.'
+    end
   end
 end

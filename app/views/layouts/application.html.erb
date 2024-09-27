@@ -33,8 +33,9 @@
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
               <%= link_to 'Home', root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
-              <%= link_to 'Gruppen', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'Blog', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
               <%= link_to 'Spielen', new_game_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
+              <%= link_to 'History', histories_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
 
             </div>
 
@@ -46,6 +47,7 @@
               <% if current_user&.admin? %>
                 <%= link_to 'Admin Dashboard', admin_users_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
               <% end %>
+              <%= link_to 'Profil', profile_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
               <%= button_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
             <% else %>
               <%= link_to 'Anmelden', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium', data: { turbo: false } %>
@@ -73,11 +75,11 @@
     <div class="hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <%= link_to 'Home', root_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
-        <%= link_to 'Games', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
-        <%= link_to 'Groups', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
-        <%= link_to 'Play', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
+        <%= link_to 'Blog', groups_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
+        <%= link_to 'Spielen', games_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
 
         <% if user_signed_in? %>
+          <%= link_to 'Profil', profile_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
           <%= button_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>
         <% else %>
           <%= link_to 'Anmelden', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium', data: { turbo: false } %>

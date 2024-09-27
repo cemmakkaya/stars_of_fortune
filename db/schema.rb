@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_26_214457) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_27_083102) do
   create_table "game_histories", force: :cascade do |t|
     t.integer "user_id"
     t.integer "game_id", null: false
@@ -69,9 +69,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_214457) do
     t.string "title"
     t.text "content"
     t.integer "user_id", null: false
+    t.integer "group_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "group_id", null: false
     t.index ["group_id"], name: "index_posts_on_group_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -83,7 +83,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_214457) do
     t.datetime "reset_password_sent_at", precision: nil
     t.datetime "remember_created_at", precision: nil
     t.string "username"
-    t.integer "c_bucks", default: 0
+    t.integer "c_bucks", default: 500
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "custom_encrypted_password"

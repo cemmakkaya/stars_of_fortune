@@ -3,16 +3,23 @@
     Welcome to <span class="underline decoration-[#6199A4]">StarsOfFortune</span>
   </h1>
 
-  <div class="flex space-x-4 mb-6">
+  <div class="flex flex-col items-center mb-6">
     <% if user_signed_in? %>
-      <%= link_to 'Groups', groups_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Groups' %>
-      <%= link_to 'History', histories_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Game History' %>
-      <%= link_to new_game_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Start a new game' do %>
+      <div class="flex space-x-4 mb-4">
+        <%= link_to 'Blog', groups_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Groups' %>
+        <%= link_to 'History', histories_path, class: 'text-center px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'View Game History' %>
+      </div>
+      <%= link_to new_game_path, class: 'w-full max-w-xs flex justify-center items-center px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Start a new game' do %>
         <i class="fas fa-play mr-2"></i> Play Now
       <% end %>
     <% else %>
-      <%= link_to 'Sign In', new_user_session_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Sign in to your account' %>
-      <%= link_to 'Sign Up', new_user_registration_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Create a new account' %>
+      <div class="flex space-x-4 mb-4">
+        <%= link_to 'Anmelden', new_user_session_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Sign in to your account' %>
+        <%= link_to 'Registrieren', new_user_registration_path, class: 'px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Create a new account' %>
+      </div>
+      <%= link_to new_game_path, class: 'w-full max-w-xs flex justify-center items-center px-6 py-3 bg-[#4FB6CB] text-white font-semibold rounded-lg shadow-md hover:bg-[#3A95A4] focus:outline-none focus:ring-2 focus:ring-[#4FB6CB] focus:ring-opacity-75 transition duration-200 transform hover:scale-105', data: { turbo: false }, aria_label: 'Start a new game' do %>
+        <i class="fas fa-play mr-2"></i> Play Now
+      <% end %>
     <% end %>
   </div>
 </div>

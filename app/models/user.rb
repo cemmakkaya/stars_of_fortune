@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :posts
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
+  after_initialize :set_default_c_bucks, if: :new_record?
+  after_initialize :set_default_role, if: :new_record?
 
   scope :admins, -> { where(admin: true) }
 
@@ -31,10 +33,10 @@ class User < ApplicationRecord
   end
 
   def admin?
-    admin == true
+    admin
   end
 
-  def active_game
+def active_game
     games.where(status: ['waiting', 'in_progress']).first
   end
 
@@ -52,5 +54,20 @@ class User < ApplicationRecord
 
   def self.current=(user)
     Thread.current[:current_user] = user
+  end
+
+  def role
+    admin? ? 'admin' : 'user'
+  end
+
+
+  private
+
+  def set_default_c_bucks
+    self.c_bucks ||= 500
+  end
+
+  def set_default_role
+    self.role ||= 'user'
   end
 end

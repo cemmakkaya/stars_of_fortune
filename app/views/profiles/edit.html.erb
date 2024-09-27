@@ -1,0 +1,39 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div class="w-full max-w-lg">
+    <div class="bg-white shadow-md rounded-lg p-8">
+      <h1 class="text-3xl font-bold mb-6 text-center">Profil bearbeiten</h1>
+
+      <%= form_with(model: current_user, url: profile_path, method: :patch, local: true, class: "space-y-6") do |f| %>
+        <!-- Benutzername -->
+        <div>
+          <%= f.label :username, 'Benutzername', class: "block text-lg font-medium text-gray-700" %>
+          <%= f.text_field :username, class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6CD5EA] focus:border-transparent" %>
+        </div>
+
+        <!-- E-Mail -->
+        <div>
+          <%= f.label :email, 'E-Mail', class: "block text-lg font-medium text-gray-700" %>
+          <%= f.email_field :email, class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6CD5EA] focus:border-transparent" %>
+        </div>
+
+        <!-- Neues Passwort -->
+        <div>
+          <%= f.label :password, 'Neues Passwort (leer lassen, wenn unverändert)', class: "block text-lg font-medium text-gray-700" %>
+          <%= f.password_field :password, class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6CD5EA] focus:border-transparent" %>
+        </div>
+
+        <!-- Passwort bestätigen -->
+        <div>
+          <%= f.label :password_confirmation, 'Passwort bestätigen', class: "block text-lg font-medium text-gray-700" %>
+          <%= f.password_field :password_confirmation, class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6CD5EA] focus:border-transparent" %>
+        </div>
+
+        <!-- Button: Aktualisieren und Abbrechen -->
+        <div class="flex items-center justify-between">
+          <%= f.submit 'Aktualisieren', class: "px-4 py-2 bg-[#6CD5EA] text-white font-semibold rounded-lg shadow-md hover:bg-[#4DAFC0] transition duration-200" %>
+          <%= link_to 'Abbrechen', profile_path, class: "inline-block align-baseline font-semibold text-sm text-gray-600 hover:text-gray-800" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

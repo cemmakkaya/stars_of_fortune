@@ -1,41 +1,41 @@
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-center mb-8">Game Result</h1>
+  <h1 class="text-3xl font-bold text-center mb-8">Spiel Resultat</h1>
 
   <div class="bg-white shadow-md rounded-lg p-6 mb-6">
     <% if @game.status == 'completed' %>
       <% participation = @game.game_participations.find_by(user: current_user) %>
       <% if participation %>
         <p class="text-2xl font-bold mb-4 <%= @game.won?(current_user) ? 'text-green-500' : 'text-red-500' %>">
-          <%= @game.won?(current_user) ? 'You Won!' : 'You Lost.' %>
+          <%= @game.won?(current_user) ? 'DU hast gewonnen!' : 'Du hast verloren.' %>
         </p>
         <p class="text-xl mb-4">
-          You chose Card <%= participation.selected_card %> and bet <%= participation.bet_amount %> C-Bucks.
+          Du hast <%= participation.selected_card %> gewählt und <%= participation.bet_amount %> C-Bucks eingesetzt.
         </p>
         <p class="text-xl mb-4">
-          The winning card was: <%= @game.winning_card %>
+          Richtiger Diamant: <%= @game.winning_card %>
         </p>
         <% if @game.won?(current_user) %>
           <p class="text-xl mb-4 text-green-500">
-            You won <%= participation.bet_amount %> C-Bucks!
+            Du hast <%= participation.bet_amount %> C-Bucks gewonnen!
           </p>
         <% else %>
           <p class="text-xl mb-4 text-red-500">
-            You lost <%= participation.bet_amount %> C-Bucks.
+            Du hast <%= participation.bet_amount %> C-Bucks verloren.
           </p>
         <% end %>
         <p class="text-xl mb-4">
-          Your current C-Bucks balance: <%= current_user.c_bucks %>
+          Aktuelle C-Bucks: <%= current_user.c_bucks %>
         </p>
       <% else %>
-        <p class="text-xl mb-4">You did not participate in this game.</p>
+        <p class="text-xl mb-4">Du hast nicht mitgespielt.</p>
       <% end %>
     <% else %>
-      <p class="text-xl mb-4">The game is not completed yet.</p>
+      <p class="text-xl mb-4">Das Spiel läuft noch.</p>
     <% end %>
   </div>
 
   <div class="text-center">
-    <%= link_to 'Play Again', new_game_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-    <%= link_to 'Back to Games', games_path, class: "ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded" %>
+    <%= link_to '<i class="fas fa-redo text-2xl"></i>'.html_safe, new_game_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center" %>
+    <%= link_to '<i class="fas fa-home text-2xl"></i>'.html_safe, root_path, class: "ml-4 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded inline-flex items-center" %>
   </div>
 </div>

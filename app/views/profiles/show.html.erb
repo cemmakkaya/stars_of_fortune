@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div class="w-full max-w-lg">
+    <div class="bg-white shadow-md rounded-lg p-8">
+      <h1 class="text-3xl font-bold mb-6 text-center">Mein Profil</h1>
+
+      <div class="space-y-6">
+        <!-- Benutzername -->
+        <div>
+          <label class="block text-lg font-medium text-gray-700">Benutzername:</label>
+          <p class="text-xl text-gray-900"><%= current_user.username %></p>
+        </div>
+
+        <!-- E-Mail -->
+        <div>
+          <label class="block text-lg font-medium text-gray-700">E-Mail:</label>
+          <p class="text-xl text-gray-900"><%= current_user.email %></p>
+        </div>
+
+        <!-- Rolle -->
+        <div>
+          <label class="block text-lg font-medium text-gray-700">Rolle:</label>
+          <p class="text-xl text-gray-900"><%= current_user.admin? ? 'Admin' : 'User' %></p>
+        </div>
+
+        <!-- Profil bearbeiten Button -->
+        <div class="text-center">
+          <%= link_to 'Profil bearbeiten', edit_profile_path, class: 'px-4 py-2 bg-[#6CD5EA] text-white font-semibold rounded-lg shadow-md hover:bg-[#4DAFC0] transition duration-200' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,12 +4,20 @@ class GamesController < ApplicationController
 
   def new
     @game = Game.new
+    @games = current_user.games
   end
 
   def create
-    @game = current_user.groups.first.games.build
-    @game.status = 'completed'  # Set the game as completed immediately
-    @game.set_winning_card  # Make sure this method exists in your Game model
+    Rails.logger.info "Current user: #{current_user.inspect}"
+    Rails.logger.info "Current user's groups: #{current_user.groups.inspect}"
+
+    @group = current_user.groups.first
+    Rails.logger.info "Selected group: #{@group.inspect}"
+
+    @game = @group.games.build
+    @game.status = 'completed'
+    @game.set_winning_card
+
 
     if @game.save
       @participation = @game.game_participations.create(
@@ -20,6 +28,7 @@ class GamesController < ApplicationController
       @game.update_user_c_bucks  # Make sure this method exists in your Game model
       redirect_to @game, notice: 'Bet placed successfully.'
     else
+      Rails.logger.error "Game save failed: #{@game.errors.full_messages}"
       render :new
     end
   end

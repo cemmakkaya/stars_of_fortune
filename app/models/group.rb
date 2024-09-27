@@ -1,5 +1,4 @@
 class Group < ApplicationRecord
-  # Using only one association for users through memberships
   has_many :group_memberships, dependent: :destroy
   has_many :users, through: :group_memberships
   has_many :games, dependent: :destroy
@@ -12,9 +11,12 @@ class Group < ApplicationRecord
 
   after_create :add_creator_to_group
 
-  # Method to remove a member (you might want this)
   def remove_member(user)
-    group_memberships.find_by(user_id: user.id)&.destroy
+    membership = group_memberships.find_by(user_id: user.id)
+    if membership
+      membership.destroy
+      destroy_if_empty
+    end
   end
 
   private
@@ -26,9 +28,10 @@ class Group < ApplicationRecord
   end
 
   def add_creator_to_group
-    # Assuming you will handle adding the creator in the controller
-    if User.current.present?
-      users << User.current
-    end
+    users << User.current if User.current.present?
+  end
+
+  def destroy_if_empty
+    destroy if users.reload.empty?
   end
 end

@@ -1,7 +1,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   def create
     params[:user].delete(:email)
-    super
+    super do |user|
+      user.c_bucks = 500 if user.persisted?
+    end
   end
 
   protected
